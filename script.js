@@ -237,7 +237,7 @@ add.addEventListener("click", () => {
     }
 });
 /* TO FIX:
-CAN ADD INFINITE DOT
+CAN ADD INFINITE DOT 
 */ 
 dot.addEventListener("click", () => {
     
