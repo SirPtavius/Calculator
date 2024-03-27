@@ -1,3 +1,4 @@
+
 #container{
     display: flex;
     flex-direction: column;
@@ -6,12 +7,15 @@
     border-radius: 20px;
     width: 350px;
 }
-#screen{
+#display{
+    font-family: 'Orbitron', sans-serif;
     background-color: lightgray;
     height: 50px;
     width: 300px;
     margin: 20px;
     border-radius: 20px;
+    text-align: end;
+    font-size: 40px;
 }
 #lastRow{ 
     align-self: flex-end;
