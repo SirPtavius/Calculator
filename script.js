@@ -1,13 +1,13 @@
-//global
+// Global variables
 let a = ""
 let b = ""
 let operator = ""
 
 
-// Seleziona l'elemento con ID "display"
+// Select the element with ID "display"
 let display = document.querySelector("#display");
 
-// Seleziona gli elementi dei pulsanti numerici
+// Select numeric buttons elements
 let zero = document.getElementById("0");
 let one = document.getElementById("1");
 let two = document.getElementById("2");
@@ -19,7 +19,7 @@ let seven = document.getElementById("7");
 let eight = document.getElementById("8");
 let nine = document.getElementById("9");
 
-// Seleziona gli elementi degli operatori e altri pulsanti
+// Select operator and other buttons elements
 let clear = document.getElementById("clear");
 let back = document.getElementById("back");
 let module = document.getElementById("module");
@@ -31,7 +31,13 @@ let dot = document.getElementById("dot");
 let result = document.getElementById("result");
 
 
-//Numbers buttons
+// Numbers buttons
+/*
+TO FIX:
+-HANDLE OPERATIONS AFTER THE FIRST TOTAL
+-DECIDE WHETHER TO ALLOW MULTIPLE OPERATIONS TOGETHER (2+2*4) OR MAX 2 (2+2 -> 4 * 2)
+*/
+
 zero.addEventListener("click", () => {
     display.textContent += zero.textContent;
     if(operator === ""){
@@ -134,14 +140,12 @@ nine.addEventListener("click", () => {
 
 //clear
 back.addEventListener("click", () => {
+    
     display.textContent = display.textContent.slice(0, -1);
-    if(operator === ""){
-       a = a.slice(0,-1)
-
-    }
-    else{
-       b = b.slice(0,-1)
-    }
+    
+    if (b !== "" && operator !== "") {b = b.slice(0, -1)} 
+    else if (operator !== "") {operator = ""} 
+    else if (a !== "") {a = a.slice(0, -1)}
 });
 
 clear.addEventListener("click", () => {
@@ -151,33 +155,92 @@ clear.addEventListener("click", () => {
     operator = ""
 });
 
-//Operator buttons
+// Operator buttons
+/*
+TO FIX:
+POSSIBILITY TO PRESS OPERATORS AS FIRST ARGUMENT (*2+4)
+TO ADD:
+POSSIBILITY/BUTTON TO USE NEGATIVE NUMBERS
+*/
 module.addEventListener("click", () => {
-    display.textContent += "%";
-    operator += "%"
+    if(operator === ""){
+        display.textContent += "%";
+        operator = "%"
+    }
+    else if(operator !== "%"){
+        display. textContent = display.textContent.slice(0, -1)
+        operator = "%"
+        display.textContent += "%"
+    }
+    else{
+        return
+    }
 });
 
 divide.addEventListener("click", () => {
-    display.textContent += "/";
-    operator += "/"
+    if(operator === ""){
+        display.textContent += "/";
+        operator = "/"
+    }
+    else if(operator !== "/"){
+        display. textContent = display.textContent.slice(0, -1)
+        operator = "/"
+        display.textContent += "/"
+    }
+    else{
+        return
+    }
 });
 
 multiply.addEventListener("click", () => {
-    display.textContent += "x";
-    operator += "*"
+    if(operator === ""){
+        display.textContent += "*";
+        operator = "*"
+    }
+    else if(operator !== "*"){
+        display. textContent = display.textContent.slice(0, -1)
+        operator = "*"
+        display.textContent += "*"
+    }
+    else{
+        return
+    }
 });
 
 subtract.addEventListener("click", () => {
-    display.textContent += "-";
-    operator += "-"
+    if(operator === ""){
+        display.textContent += "-";
+        operator = "-"
+    }
+    else if(operator !== "-"){
+        display.textContent = display.textContent.slice(0, -1)
+        operator = "-"
+        display.textContent += "-"
+    }
+    else{
+        return
+    }
 });
 
 add.addEventListener("click", () => {
-    display.textContent += "+";
-    operator = "+"
+    if(operator === ""){
+        display.textContent += "+";
+        operator = "+"
+    }
+    else if(operator !== "+"){
+        display.textContent = display.textContent.slice(0, -1)
+        operator = "+"
+        display.textContent += "+"
+    }
+    else{
+        return
+    }
 });
-
+/* TO FIX:
+CAN ADD INFINITE DOT
+*/ 
 dot.addEventListener("click", () => {
+    
     display.textContent += dot.textContent;
     if(operator === ""){
         a += "."
