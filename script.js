@@ -2,7 +2,7 @@
 let a = "";
 let b = "";
 let operator = "";
-
+let lastResult = false;
 // Select the element with ID "display"
 let display = document.querySelector("#display");
 
@@ -33,94 +33,61 @@ let negative = document.getElementById("negative");
 // Numbers buttons
 
 zero.addEventListener("click", () => {
-    display.textContent += zero.textContent;
-    if (operator === "") {
-        a += "0";
-    } else {
-        b += "0";
-    }
+    handleNumberClick(zero.textContent);
 });
 
 one.addEventListener("click", () => {
-    display.textContent += one.textContent;
-    if (operator === "") {
-        a += "1";
-    } else {
-        b += "1";
-    }
+    handleNumberClick(one.textContent);
 });
 
 two.addEventListener("click", () => {
-    display.textContent += two.textContent;
-    if (operator === "") {
-        a += "2";
-    } else {
-        b += "2";
-    }
+    handleNumberClick(two.textContent);
 });
 
 three.addEventListener("click", () => {
-    display.textContent += three.textContent;
-    if (operator === "") {
-        a += "3";
-    } else {
-        b += "3";
-    }
+    handleNumberClick(three.textContent);
 });
 
 four.addEventListener("click", () => {
-    display.textContent += four.textContent;
-    if (operator === "") {
-        a += "4";
-    } else {
-        b += "4";
-    }
+    handleNumberClick(four.textContent);
 });
 
 five.addEventListener("click", () => {
-    display.textContent += five.textContent;
-    if (operator === "") {
-        a += "5";
-    } else {
-        b += "5";
-    }
+    handleNumberClick(five.textContent);
 });
 
 six.addEventListener("click", () => {
-    display.textContent += six.textContent;
-    if (operator === "") {
-        a += "6";
-    } else {
-        b += "6";
-    }
+    handleNumberClick(six.textContent);
 });
 
 seven.addEventListener("click", () => {
-    display.textContent += seven.textContent;
-    if (operator === "") {
-        a += "7";
-    } else {
-        b += "7";
-    }
+    handleNumberClick(seven.textContent);
 });
 
 eight.addEventListener("click", () => {
-    display.textContent += eight.textContent;
-    if (operator === "") {
-        a += "8";
-    } else {
-        b += "8";
-    }
+    handleNumberClick(eight.textContent);
 });
 
 nine.addEventListener("click", () => {
-    display.textContent += nine.textContent;
-    if (operator === "") {
-        a += "9";
-    } else {
-        b += "9";
-    }
+    handleNumberClick(nine.textContent);
 });
+
+function handleNumberClick(number) {
+    if (lastResult) {
+        display.textContent = ""; // Azzera il display
+        a = ""; // Azzera il valore di a
+        lastResult = false; // Imposta lastResult su false
+    }
+    if (display.textContent === "0") {
+        display.textContent = ""; // Rimuovi lo zero se il display mostra solo "0"
+    }
+    display.textContent += number;
+    if (operator === "") {
+        a += number;
+    } else {
+        b += number;
+    }
+}
 
 // Clear
 back.addEventListener("click", () => {
@@ -285,6 +252,7 @@ negative.addEventListener("click", () => {
 // Call the function "calculateResult" here
 result.addEventListener("click", () => {
     calculateResult();
+    lastResult = true;
 });
 
 function calculateResult() {
