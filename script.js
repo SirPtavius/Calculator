@@ -3,6 +3,7 @@ let a = "";
 let b = "";
 let operator = "";
 let lastResult = false;
+
 // Select the element with ID "display"
 let display = document.querySelector("#display");
 
@@ -31,55 +32,26 @@ let result = document.getElementById("result");
 let negative = document.getElementById("negative");
 
 // Numbers buttons
-
-zero.addEventListener("click", () => {
-    handleNumberClick(zero.textContent);
-});
-
-one.addEventListener("click", () => {
-    handleNumberClick(one.textContent);
-});
-
-two.addEventListener("click", () => {
-    handleNumberClick(two.textContent);
-});
-
-three.addEventListener("click", () => {
-    handleNumberClick(three.textContent);
-});
-
-four.addEventListener("click", () => {
-    handleNumberClick(four.textContent);
-});
-
-five.addEventListener("click", () => {
-    handleNumberClick(five.textContent);
-});
-
-six.addEventListener("click", () => {
-    handleNumberClick(six.textContent);
-});
-
-seven.addEventListener("click", () => {
-    handleNumberClick(seven.textContent);
-});
-
-eight.addEventListener("click", () => {
-    handleNumberClick(eight.textContent);
-});
-
-nine.addEventListener("click", () => {
-    handleNumberClick(nine.textContent);
-});
+zero.addEventListener("click", () => handleNumberClick(zero.textContent));
+one.addEventListener("click", () => handleNumberClick(one.textContent));
+two.addEventListener("click", () => handleNumberClick(two.textContent));
+three.addEventListener("click", () => handleNumberClick(three.textContent));
+four.addEventListener("click", () => handleNumberClick(four.textContent));
+five.addEventListener("click", () => handleNumberClick(five.textContent));
+six.addEventListener("click", () => handleNumberClick(six.textContent));
+seven.addEventListener("click", () => handleNumberClick(seven.textContent));
+eight.addEventListener("click", () => handleNumberClick(eight.textContent));
+nine.addEventListener("click", () => handleNumberClick(nine.textContent));
 
 function handleNumberClick(number) {
-    if (lastResult) {
-        display.textContent = ""; // Azzera il display
-        a = ""; // Azzera il valore di a
-        lastResult = false; // Imposta lastResult su false
+
+    if (display.textContent.length >= 9) {
+        return; 
     }
-    if (display.textContent === "0") {
-        display.textContent = ""; // Rimuovi lo zero se il display mostra solo "0"
+    if (lastResult) {
+        display.textContent = "";
+        a = "";
+        lastResult = false;
     }
     display.textContent += number;
     if (operator === "") {
@@ -91,7 +63,11 @@ function handleNumberClick(number) {
 
 // Clear
 back.addEventListener("click", () => {
+    console.log("Back button clicked");
     display.textContent = display.textContent.slice(0, -1);
+    console.log("Display text after back: ", display.textContent);
+    console.log("a before update: ", a);
+    console.log("b before update: ", b);
     if (b !== "" && operator !== "") {
         b = b.slice(0, -1);
     } else if (operator !== "") {
@@ -99,6 +75,8 @@ back.addEventListener("click", () => {
     } else if (a !== "") {
         a = a.slice(0, -1);
     }
+    console.log("a after update: ", a);
+    console.log("b after update: ", b);
 });
 
 clear.addEventListener("click", () => {
@@ -109,25 +87,17 @@ clear.addEventListener("click", () => {
 });
 
 // Operator buttons
+percent.addEventListener("click", () => handleOperator("/"));
+divide.addEventListener("click", () => handleOperator("/"));
+multiply.addEventListener("click", () => handleOperator("*"));
+subtract.addEventListener("click", () => handleOperator("-"));
+add.addEventListener("click", () => handleOperator("+"));
 
-percent.addEventListener("click", () => {
-    if (a === "") {
-        return;
+function handleOperator(functionOp) {
+    if (lastResult) {
+        lastResult = false;
     }
-
-    if (operator === "") {
-        a = (a / 100).toString();
-        display.textContent =  a;
-    } else if (a !== "" && operator !== "") {
-        b = (b / 100).toString();
-        display.textContent = a + operator + b;
-    } else {
-        return;
-    }
-});
-
-divide.addEventListener("click", () => {
-    if (a !== "" && operator == "/" && b == "") {
+    if (a !== "" && operator == functionOp && b == "") {
         b = a;
         calculateResult();
     }
@@ -138,85 +108,16 @@ divide.addEventListener("click", () => {
         return;
     }
     if (operator === "") {
-        display.textContent += "/";
-        operator = "/";
-    } else if (operator !== "/") {
+        display.textContent += functionOp;
+        operator = functionOp;
+    } else if (operator !== functionOp) {
         display.textContent = display.textContent.slice(0, -1);
-        operator = "/";
-        display.textContent += "/";
+        operator = functionOp;
+        display.textContent += functionOp;
     } else {
         return;
     }
-});
-
-multiply.addEventListener("click", () => {
-    if (a !== "" && operator == "*" && b == "") {
-        b = a;
-        calculateResult();
-    }
-    if (a !== "" && operator !== "" && b !== "" ) {
-        calculateResult();
-    }
-    if (a === "") {
-        return;
-    }
-    if (operator === "") {
-        display.textContent += "*";
-        operator = "*";
-    } else if (operator !== "*") {
-        display.textContent = display.textContent.slice(0, -1);
-        operator = "*";
-        display.textContent += "*";
-    } else {
-        return;
-    }
-});
-
-subtract.addEventListener("click", () => {
-    if (a !== "" && operator == "-" && b == "") {
-        b = a;
-        calculateResult();
-    }
-    if (a !== "" && operator !== "" && b !== "" ) {
-        calculateResult();
-    }
-    if (a === "") {
-        return;
-    }
-    if (operator === "") {
-        display.textContent += "-";
-        operator = "-";
-    } else if (operator !== "-") {
-        display.textContent = display.textContent.slice(0, -1);
-        operator = "-";
-        display.textContent += "-";
-    } else {
-        return;
-    }
-});
-
-add.addEventListener("click", () => {
-    if (a !== "" && operator == "+" && b == "") {
-        b = a;
-        calculateResult();
-    }
-    if (a !== "" && operator !== "" && b !== "" ) {
-        calculateResult();
-    }
-    if (a === "") {
-        return;
-    }
-    if (operator === "") {
-        display.textContent += "+";
-        operator = "+";
-    } else if (operator !== "+") {
-        display.textContent = display.textContent.slice(0, -1);
-        operator = "+";
-        display.textContent += "+";
-    } else {
-        return;
-    }
-});
+}
 
 dot.addEventListener("click", () => {
     if (operator === "") {
@@ -280,7 +181,27 @@ function calculateResult() {
             break;
     }
 
-    a = total.toFixed(2);
+    if (total.toString().length > 6) {
+        display.textContent = formatNumber(total);
+    } else {
+        if (Number.isInteger(total)) {
+            a = total.toString();
+        } else {
+            a = total.toFixed(2);
+        }
+        display.textContent = a;
+    }
+    
     operator = "";
-    display.textContent = total;
 }
+
+function formatNumber(num, decimals) {
+    const scientificNotation = num.toExponential();
+    const parts = scientificNotation.split('e');
+    const mantissa = parseFloat(parts[0]).toFixed(decimals);
+    const formattedNumber = mantissa + 'e' + parts[1];
+    return formattedNumber.replace('E', 'e');
+}
+
+
+
