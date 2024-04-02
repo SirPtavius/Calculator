@@ -25,10 +25,21 @@ body, html {
     margin: 20px;
     border-radius: 20px;
     text-align: end;
+    font-size: 25px;
+    color: white;
+}
+#displayTotal{
+    font-family: 'Orbitron', sans-serif;    
+    height: 50px;
+    width: 300px;
+    margin: 20px;
+    border-radius: 20px;
+    text-align: end;
     font-size: 40px;
     color: white;
-    border: solid 1px black;
 }
+
+
 #lastRow{ 
     align-self: flex-end;
     margin-right: 30px;

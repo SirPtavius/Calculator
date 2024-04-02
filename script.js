@@ -6,6 +6,10 @@ let lastResult = false;
 
 // Select the element with ID "display"
 let display = document.querySelector("#display");
+let displayTotal = document.querySelector("#displayTotal");
+
+// Global variable to define the threshold for switching to scientific notation
+const SCIENTIFIC_NOTATION_THRESHOLD = 1e9; // Modify this threshold as needed
 
 // Select numeric buttons elements
 let zero = document.getElementById("0");
@@ -44,30 +48,28 @@ eight.addEventListener("click", () => handleNumberClick(eight.textContent));
 nine.addEventListener("click", () => handleNumberClick(nine.textContent));
 
 function handleNumberClick(number) {
-
-    if (display.textContent.length >= 9) {
-        return; 
-    }
     if (lastResult) {
         display.textContent = "";
         a = "";
         lastResult = false;
     }
-    display.textContent += number;
-    if (operator === "") {
-        a += number;
+    // Controllo se il display è vuoto e il tasto premuto è il punto decimale
+    if (display.textContent === "" && number === ".") {
+        display.textContent = "0" + number;
+        a += "0" + number;
     } else {
-        b += number;
+        display.textContent += number;
+        if (operator === "") {
+            a += number;
+        } else {
+            b += number;
+        }
     }
 }
 
 // Clear
 back.addEventListener("click", () => {
-    console.log("Back button clicked");
     display.textContent = display.textContent.slice(0, -1);
-    console.log("Display text after back: ", display.textContent);
-    console.log("a before update: ", a);
-    console.log("b before update: ", b);
     if (b !== "" && operator !== "") {
         b = b.slice(0, -1);
     } else if (operator !== "") {
@@ -75,19 +77,17 @@ back.addEventListener("click", () => {
     } else if (a !== "") {
         a = a.slice(0, -1);
     }
-    console.log("a after update: ", a);
-    console.log("b after update: ", b);
 });
 
 clear.addEventListener("click", () => {
     display.textContent = "";
+    displayTotal.textContent = "0";
     a = "";
     b = "";
     operator = "";
 });
 
 // Operator buttons
-percent.addEventListener("click", () => handleOperator("/"));
 divide.addEventListener("click", () => handleOperator("/"));
 multiply.addEventListener("click", () => handleOperator("*"));
 subtract.addEventListener("click", () => handleOperator("-"));
@@ -101,7 +101,7 @@ function handleOperator(functionOp) {
         b = a;
         calculateResult();
     }
-    if (a !== "" && operator !== "" && b !== "" ) {
+    if (a !== "" && operator !== "" && b !== "") {
         calculateResult();
     }
     if (a === "") {
@@ -119,15 +119,33 @@ function handleOperator(functionOp) {
     }
 }
 
+percent.addEventListener("click", () => {
+    if (a === "") {
+        return;
+    }
+
+    if (operator === "") {
+        a = (a / 100).toString();
+        display.textContent =  a;
+    } else if (a !== "" && operator !== "") {
+        b = (b / 100).toString();
+        display.textContent = a + operator + b;
+    } else {
+        return;
+    }
+});
+
 dot.addEventListener("click", () => {
     if (operator === "") {
         if (!a.includes(".")) {
             display.textContent += dot.textContent;
             a += ".";
         }
-    } else if (!b.includes(".")) {
-        display.textContent += dot.textContent;
-        b += ".";
+    } else {
+        if (!b.includes(".")) {
+            display.textContent += dot.textContent;
+            b += ".";
+        }
     }
 });
 
@@ -176,32 +194,44 @@ function calculateResult() {
         case "*":
             total = copyA * copyB;
             break;
-        case "%":
-            total = copyA % copyB;
-            break;
     }
 
-    if (total.toString().length > 6) {
+    if (Math.abs(total) >= SCIENTIFIC_NOTATION_THRESHOLD) {
+        displayTotal.textContent = formatNumber(total);
         display.textContent = formatNumber(total);
     } else {
-        if (Number.isInteger(total)) {
-            a = total.toString();
-        } else {
-            a = total.toFixed(2);
-        }
+        a = total.toString();
+        displayTotal.textContent = a;
         display.textContent = a;
     }
     
     operator = "";
 }
 
-function formatNumber(num, decimals) {
-    const scientificNotation = num.toExponential();
-    const parts = scientificNotation.split('e');
-    const mantissa = parseFloat(parts[0]).toFixed(decimals);
-    const formattedNumber = mantissa + 'e' + parts[1];
-    return formattedNumber.replace('E', 'e');
+function formatNumber(num) {
+    if (Math.abs(num) >= SCIENTIFIC_NOTATION_THRESHOLD) {
+        return num.toExponential();
+    } else {
+        return num.toString();
+    }
 }
 
-
-
+document.addEventListener('keydown', function(event) {
+    const key = event.key;
+    if (/[0-9]/.test(key)) {
+        handleNumberClick(key);
+    } else if (['+', '-', '*', '/', '%', '.'].includes(key)) {  
+        handleOperator(key);
+    } else if (key === 'Enter') { 
+        calculateResult();
+    } else if (key === 'Backspace') {    
+        back.click(); 
+    } else if (key === 'Delete') {
+        clear.click(); 
+    }
+});
+/*
+to fix:
+sistemare le operazioni con i numeri "e"
+gestire meglio la quantita massima di numeri nel display
+*/
