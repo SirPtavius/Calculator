@@ -47,18 +47,40 @@ seven.addEventListener("click", () => handleNumberClick(seven.textContent));
 eight.addEventListener("click", () => handleNumberClick(eight.textContent));
 nine.addEventListener("click", () => handleNumberClick(nine.textContent));
 
+// Constants for display formatting
+const MAX_DISPLAY_LENGTH = 14; // Maximum number of characters before line break
+const SPACE_BETWEEN_LINES = 2; // Space to maintain between lines
+
+// Function to handle number button clicks
 function handleNumberClick(number) {
     if (lastResult) {
+        // Clear the display and reset variables if last result was displayed
         display.textContent = "";
         a = "";
         lastResult = false;
     }
-    // Controllo se il display è vuoto e il tasto premuto è il punto decimale
+    
+    // Check if the display is empty and the pressed key is the decimal point
     if (display.textContent === "" && number === ".") {
+        // If the display is empty and the pressed key is '.', set the display to "0."
         display.textContent = "0" + number;
         a += "0" + number;
     } else {
+        // Remove extra spaces before adding a new number
+        display.textContent = display.textContent.trim();
+
+        // Check if the text exceeds the maximum length before line break
+        if (display.textContent.length >= MAX_DISPLAY_LENGTH && !display.textContent.includes("\n")) {
+            // Add a line break only if it's not already present
+            display.textContent += "\n";
+            // Add the necessary space to maintain distance between lines
+            display.textContent += " ".repeat(SPACE_BETWEEN_LINES);
+        }
+        
+        
         display.textContent += number;
+        
+        
         if (operator === "") {
             a += number;
         } else {
@@ -67,7 +89,7 @@ function handleNumberClick(number) {
     }
 }
 
-// Clear
+// Function to handle backspace button click
 back.addEventListener("click", () => {
     display.textContent = display.textContent.slice(0, -1);
     if (b !== "" && operator !== "") {
@@ -79,6 +101,7 @@ back.addEventListener("click", () => {
     }
 });
 
+// Function to clear the display
 clear.addEventListener("click", () => {
     display.textContent = "";
     displayTotal.textContent = "0";
@@ -87,12 +110,13 @@ clear.addEventListener("click", () => {
     operator = "";
 });
 
-// Operator buttons
+// Functions to handle operator button clicks
 divide.addEventListener("click", () => handleOperator("/"));
 multiply.addEventListener("click", () => handleOperator("*"));
 subtract.addEventListener("click", () => handleOperator("-"));
 add.addEventListener("click", () => handleOperator("+"));
 
+// Function to handle operator button clicks
 function handleOperator(functionOp) {
     if (lastResult) {
         lastResult = false;
@@ -119,6 +143,7 @@ function handleOperator(functionOp) {
     }
 }
 
+// Function to handle percent button click
 percent.addEventListener("click", () => {
     if (a === "") {
         return;
@@ -135,6 +160,7 @@ percent.addEventListener("click", () => {
     }
 });
 
+// Function to handle dot button click
 dot.addEventListener("click", () => {
     if (operator === "") {
         if (!a.includes(".")) {
@@ -149,9 +175,7 @@ dot.addEventListener("click", () => {
     }
 });
 
-// Variable to keep track of the state of the number (positive or negative)
-let negativeClicked = false;
-
+// Function to handle negative button click
 negative.addEventListener("click", () => {
     if (a === "") {
         return;
@@ -168,12 +192,13 @@ negative.addEventListener("click", () => {
     }
 });
 
-// Call the function "calculateResult" here
+// Function to handle result button click
 result.addEventListener("click", () => {
     calculateResult();
     lastResult = true;
 });
 
+// Function to calculate the result
 function calculateResult() {
     let copyA = parseFloat(a);
     let copyB = parseFloat(b);
@@ -196,6 +221,10 @@ function calculateResult() {
             break;
     }
 
+    if (total.toString().includes('e')) {
+        total = total.toFixed(10); // Limit the number of decimal places to 10
+    }
+
     if (Math.abs(total) >= SCIENTIFIC_NOTATION_THRESHOLD) {
         displayTotal.textContent = formatNumber(total);
         display.textContent = formatNumber(total);
@@ -208,30 +237,46 @@ function calculateResult() {
     operator = "";
 }
 
+// Function to format numbers
 function formatNumber(num) {
     if (Math.abs(num) >= SCIENTIFIC_NOTATION_THRESHOLD) {
-        return num.toExponential();
+        return parseFloat(num.toExponential()).toPrecision(3); // Modify the value 10 according to your needs
     } else {
         return num.toString();
     }
 }
 
-document.addEventListener('keydown', function(event) {
+// Event listener for keyboard input
+document.addEventListener("keydown", function(event) {
     const key = event.key;
     if (/[0-9]/.test(key)) {
         handleNumberClick(key);
-    } else if (['+', '-', '*', '/', '%', '.'].includes(key)) {  
+    } else if (["+" , "-", "*", "/"].includes(key)) {  
         handleOperator(key);
-    } else if (key === 'Enter') { 
-        calculateResult();
-    } else if (key === 'Backspace') {    
+    } else if (key === "Enter") { 
+        event.preventDefault();
+        result.click();
+    } else if (key === "Backspace") {    
         back.click(); 
-    } else if (key === 'Delete') {
+    } else if (key === "Delete") {
         clear.click(); 
+    } else if (key === "."){
+        dot.click();
+    } else if (key === "%"){
+        percent.click()
     }
 });
+
 /*
-to fix:
-sistemare le operazioni con i numeri "e"
-gestire meglio la quantita massima di numeri nel display
+
+Cant really fix right now:
+Decimal operations error(e.g., 0.3 + 3.3 = 3.599999999999)
+REQUIRES math.js 
+
+Fixed:
+Adjusted the handling of dot (.) and percent (%) buttons, which were previously managed by handleOperator instead of their respective buttons.
+Implemented a limit of 3 digits for scientific notation, which previously tended to extend beyond the display.
+Fixed the input key that reset the operation just entered.
+Enhanced the display management; now numbers are handled across multiple lines.
+Fix operations with "e" numbers
 */
