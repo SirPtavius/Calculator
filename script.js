@@ -24,15 +24,15 @@ let eight = document.getElementById("8");
 let nine = document.getElementById("9");
 
 // Select operator and other buttons elements
-let clear = document.getElementById("clear");
-let back = document.getElementById("back");
-let percent = document.getElementById("percent");
-let divide = document.getElementById("divide");
-let multiply = document.getElementById("multiply");
-let subtract = document.getElementById("subtract");
-let add = document.getElementById("add");
-let dot = document.getElementById("dot");
-let result = document.getElementById("result");
+let clear = document.getElementById("Delete");
+let back = document.getElementById("Backspace");
+let percent = document.getElementById("%");
+let divide = document.getElementById("/");
+let multiply = document.getElementById("*");
+let subtract = document.getElementById("-");
+let add = document.getElementById("+");
+let dot = document.getElementById(".");
+let result = document.getElementById("Enter");
 let negative = document.getElementById("negative");
 
 // Numbers buttons
@@ -265,9 +265,16 @@ document.addEventListener("keydown", function(event) {
     } else if (key === "%"){
         percent.click()
     }
-    
+    console.log(key)
+    // Add the class for animation
+    document.getElementById(key).classList.add("button-active");
 });
 
+// Event listener for keyup to remove the class after the key is released
+document.addEventListener("keyup", function(event) {
+    const key = event.key;
+    document.getElementById(key).classList.remove("button-active");
+});
 /*
 
 Cant really fix right now:
