@@ -77,9 +77,7 @@ function handleNumberClick(number) {
             display.textContent += " ".repeat(SPACE_BETWEEN_LINES);
         }
         
-        
-        display.textContent += number;
-        
+        display.textContent += number;     
         
         if (operator === "") {
             a += number;
@@ -224,7 +222,9 @@ function calculateResult() {
     if (total.toString().includes('e')) {
         total = total.toFixed(10); // Limit the number of decimal places to 10
     }
-
+    if (total.toString().length > 9) {
+        total = parseFloat(total.toPrecision(8));
+    }
     if (Math.abs(total) >= SCIENTIFIC_NOTATION_THRESHOLD) {
         displayTotal.textContent = formatNumber(total);
         display.textContent = formatNumber(total);
@@ -265,12 +265,13 @@ document.addEventListener("keydown", function(event) {
     } else if (key === "%"){
         percent.click()
     }
+    
 });
 
 /*
 
 Cant really fix right now:
-Decimal operations error(e.g., 0.3 + 3.3 = 3.599999999999)
+Decimal operations error(e.g., 0.3 + 3.3 = 3.5999999999999996)
 REQUIRES math.js 
 
 Fixed:
