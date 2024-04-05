@@ -1,71 +1,71 @@
-body, html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    place-items: center;
-    
+body,
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
 }
-#container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;  
-    background-color: black;
-    border-radius: 20px;
-    width: 350px;
-    border: 0.1px solid black;
-    height: 500px;
-    padding-bottom: 20px;
-    box-shadow: 5px 5px 10px 2px #333333;    
+#container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  border-radius: 20px;
+  width: 350px;
+  border: 0.1px solid black;
+  height: 500px;
+  padding-bottom: 20px;
+  box-shadow: 5px 5px 10px 2px #333333;
 }
-#display{
-    font-family: 'Orbitron', sans-serif;    
-    height: 50px;
-    width: 300px;
-    margin: 20px;
-    border-radius: 20px;
-    text-align: end;
-    font-size: 25px;
-    color: grey;
+#display {
+  font-family: "Orbitron", sans-serif;
+  height: 50px;
+  width: 300px;
+  margin: 20px;
+  border-radius: 20px;
+  text-align: end;
+  font-size: 25px;
+  color: grey;
 }
-#displayTotal{
-    font-family: 'Orbitron', sans-serif;    
-    height: 50px;
-    width: 300px;
-    margin: 20px;
-    border-radius: 20px;
-    text-align: end;
-    font-size: 35px;
-    color: white;
+#displayTotal {
+  font-family: "Orbitron", sans-serif;
+  height: 50px;
+  width: 300px;
+  margin: 20px;
+  border-radius: 20px;
+  text-align: end;
+  font-size: 35px;
+  color: white;
 }
 
-button{
-    margin: 10px;
-    border: 0px;
-    border-radius: 50%;
-    background-color: rgb(129, 127, 127);
-    height: 50px;
-    width: 50px;
-    font-size: 16px;
-    font-weight: 600;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19); 
-    cursor: pointer;
-    color: white;
-    transition: transform 0.2s ease;
+button {
+  margin: 10px;
+  border: 0px;
+  border-radius: 50%;
+  background-color: rgb(129, 127, 127);
+  height: 50px;
+  width: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+  color: white;
+  transition: transform 0.2s ease;
 }
-.number{
-    background-color: rgb(48, 47, 47);
+.number {
+  background-color: rgb(48, 47, 47);
 }
-.operator{
-    background-color: orange;
+.operator {
+  background-color: orange;
 }
-button:hover{
-    transform: scale(1.10);   
+button:hover {
+  transform: scale(1.1);
 }
-button:active{
-    transform: scale(0.96);
+button:active {
+  transform: scale(0.96);
 }
 .button-active {
-    transform: scale(0.96);
+  transform: scale(0.96);
 }
